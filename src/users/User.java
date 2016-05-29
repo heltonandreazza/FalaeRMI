@@ -8,16 +8,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class User {
 	private int id;
 	private String name;
-	private String email;
+	private String password;
 	private int rating;
 
 	public User() {	}
 
-	public User(int id, String name, String email) {
+	public User(int id, String name, String password) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.email = email;
+		this.password = password;
 		this.rating = 0;
 	}
 
@@ -37,12 +37,12 @@ public class User {
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public int getRating() {

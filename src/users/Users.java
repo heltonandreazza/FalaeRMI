@@ -1,16 +1,12 @@
 package users;
 
-import groups.Group;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
+
+import org.json.JSONObject;
 
 import json.Mapper;
-
-import org.json.JSONArray;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -25,14 +21,27 @@ public class Users {
 
 	public static void postUser(User user) {
 		users.put(user.getName(), user);
+		writeFile();
 	}
 
 	public static void deleteUser(String userName) {
 		users.remove(userName);
+		writeFile();
 	}
 
-	public static User getUser(String userName) {
-		return users.get(userName);
+	public static String getUser(String userName) {
+		String users = toJson();
+
+		JSONObject arr = new JSONObject(users);
+
+		if (arr != null) {
+			JSONObject user = arr.getJSONObject(userName);
+
+			if (user != null) {
+				return user.toString();
+			}
+		}
+		return null;
 	}
 
 	public static String getUsers() {
@@ -81,7 +90,7 @@ public class Users {
 		}
 		return null;
 	}
-	
+
 	public static String toJson() {
 		ObjectMapper mapper = Mapper.getInstance();
 

@@ -2,6 +2,9 @@ package groups;
 
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import json.Mapper;
 import users.User;
 
@@ -38,8 +41,21 @@ public class Group {
 		return users;
 	}
 
-	public void setUsers(HashMap<String, User> users) {
-		this.users = users;
+	public void setUsers(JSONArray users) {
+		if (users != null) {
+			for (int i = 0; i < users.length(); i++) {
+				JSONObject jsonUser = users.getJSONObject(i);
+
+				if (jsonUser != null) {
+					User user = new User(jsonUser.getInt("id"),
+							jsonUser.getString("name"),
+							jsonUser.getString("password"));
+					user.setRating(jsonUser.getInt("rating"));
+
+					this.users.put(user.getName(), user);
+				}
+			}
+		}
 	}
 
 	public int getId() {
@@ -77,25 +93,25 @@ public class Group {
 	public void putUser(User user) {
 		this.users.put(user.getName(), user);
 	}
-	
+
 	public User getUser(String userName) {
 		return this.users.get(userName);
 	}
-	
+
 	public void removeUser(String userName) {
 		this.users.remove(userName);
 	}
 
 	public String toJson() {
 		ObjectMapper mapper = Mapper.getInstance();
-		
+
 		try {
 			return mapper.writeValueAsString(this);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

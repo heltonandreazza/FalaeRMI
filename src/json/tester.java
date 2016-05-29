@@ -2,20 +2,9 @@ package json;
 
 import groups.Group;
 import groups.Groups;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import users.User;
 import users.Users;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class tester {
@@ -23,29 +12,33 @@ public class tester {
 	public static void main(String[] args) {
 		ObjectMapper mapper = Mapper.getInstance();
 
-		User user2 = new User(1, "helton", "email");
+		User user1 = new User(1, "helton", "123");
+		User user2 = new User(2, "ana", "321");
+		User user3 = new User(3, "airton", "123456");
+		User user4 = new User(4, "vanusa", "senha");
+		
 		Group group = new Group(1, "group", "desc", "name");
 		group.putUser(user2);
-		User user3 = new User(2, "helton2", "email");
 		group.putUser(user3);
 
 		Group group2 = new Group(20, "group2", "desc2", "name2");
 		group2.putUser(user2);
-		User user4 = new User(12, "newuser", "email2");
 		group2.putUser(user4);
+		group2.putUser(user1);
 
 		Groups.postGroup(group);
 		Groups.postGroup(group2);
-		// System.out.println(Groups.getGroup("group"));
-		// System.out.println(Groups.toJson());
-
+		
 		Users.postUser(user2);
+		Users.postUser(user1);
 		Users.postUser(user3);
 		Users.postUser(user4);
 		
+		
 		//TESTE USERS
-		Users.writeFile();
+		//Users.writeFile();
 		Users.loadFile();
+		System.out.println("get user: " + Users.getUser("helton"));
 		System.out.println("users: " + Users.getUsers());
 //		try {
 //			System.out.println("map users: \n" + mapper.writeValueAsString(Users.readFile()));

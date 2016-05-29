@@ -1,11 +1,8 @@
-package groups;
+package logs;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONObject;
 
 import json.Mapper;
 
@@ -15,43 +12,34 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Groups {
+public class Logs {
 
-	private static HashMap<String, Group> groups = new HashMap<String, Group>();
-	private static File file = new File("C:\\baseJson\\groups.json");
+	private static HashMap<String, Log> logs = new HashMap<String, Log>();
+	private static File file = new File("C:\\baseJson\\logs.json");
 
-	public static void postGroup(Group group) {
-		groups.put(group.getName(), group);
-		writeFile();
+	public static void postLog(Log log) {
+		logs.put(log.getDateTime(), log);
 	}
 
-	public static void deleteGroup(String groupName) {
-		groups.remove(groupName);
-		writeFile();
+	public static void deleteLog(String logDateTime) {
+		logs.remove(logDateTime);
 	}
 
-	public static String getGroup(String groupName) {
-		String groups = toJson();
-		
-		JSONObject group = new JSONObject(groups).getJSONObject(groupName);
-		
-		if(group != null) {			
-			return group.toString();
-		}
-		return null;
+	public static Log getLog(String logDateTime) {
+		return logs.get(logDateTime);
 	}
 
-	public static String getGroups() {
+	public static String getlogs() {
 		return toJson();
 	}
 
-	public static Map<String, Group> getMapGroups() {
-		return groups;
+	public static HashMap<String, Log> getMaplogs() {
+		return logs;
 	}
 
 	public static void writeFile() {
 		try {
-			Mapper.getInstance().writeValue(file, groups);
+			Mapper.getInstance().writeValue(file, logs);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,14 +53,14 @@ public class Groups {
 	}
 
 	public static void loadFile() {
-		HashMap<String, Group> readFile = readFile();
+		HashMap<String, Log> readFile = readFile();
 
 		if (readFile != null) {
-			groups = readFile;
+			logs = readFile;
 		}
 	}
 
-	public static HashMap<String, Group> readFile() {
+	public static HashMap<String, Log> readFile() {
 		try {
 			return Mapper.getInstance().readValue(file, HashMap.class);
 		} catch (JsonParseException e) {
@@ -92,7 +80,7 @@ public class Groups {
 		ObjectMapper mapper = Mapper.getInstance();
 
 		try {
-			return mapper.writeValueAsString(groups);
+			return mapper.writeValueAsString(logs);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,5 +88,4 @@ public class Groups {
 
 		return null;
 	}
-
 }
