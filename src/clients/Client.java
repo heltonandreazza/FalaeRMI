@@ -41,10 +41,10 @@ public class Client {
 			throws RemoteException {
 		
 		System.out.println();
-		//String strToken = serverCorba.generateToken("helton", "123");
+		String strToken = serverCorba.generateToken("helton", "helton@com");
 		//System.out.println("generate token: " + strToken);
 		
-		String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjNoZWx0b24iLCJpc3MiOiJodHRwOlwvXC9oZWx0b24tcGM6ODA4MCIsImV4cCI6MTQ2NDQ3NjQwNX0.QCh5bF-SjvWkgiXnAR8AGJsA-UlDYc0n5KFzXAp91pw";
+		String token = strToken;
 		System.out.println("verify a token: " + serverCorba.verifyToken(token));
 		System.out.println();
 		
@@ -66,6 +66,12 @@ public class Client {
 		System.out.println("post group: "
 				+ serverStub.postGroup(3, "nome3", "desc3", "ana", "", token));
 
+		//SET USER IN A GROUP
+		System.out.println();
+		String users = "[{\"password\":\"123\",\"name\":\"hell\",\"rating\":10,\"id\":99},{\"password\":\"123456\",\"name\":\"helll\",\"rating\":100,\"id\":999}]";
+		System.out.println("set user in a group: " 
+				+ serverStub.setUsersGroup("nome", users, token));
+		
 		// delete GROUP 2
 		System.out.println("\n delete group: "
 				+ serverStub.deleteGroup("nome2", token));

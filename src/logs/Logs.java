@@ -19,10 +19,12 @@ public class Logs {
 
 	public static void postLog(Log log) {
 		logs.put(log.getDateTime(), log);
+		writeFile();
 	}
 
 	public static void deleteLog(String logDateTime) {
 		logs.remove(logDateTime);
+		writeFile();
 	}
 
 	public static Log getLog(String logDateTime) {

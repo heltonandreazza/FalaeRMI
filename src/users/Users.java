@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Users {
 
-	private static HashMap<String, User> users = new HashMap<String, User>();
+	private static HashMap<String, User> users = new HashMap<String, User>();	
 	private static File file = new File("C:\\baseJson\\users.json");
 
 	public static void postUser(User user) {

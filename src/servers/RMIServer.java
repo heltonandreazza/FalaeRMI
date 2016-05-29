@@ -76,6 +76,24 @@ public class RMIServer implements RMIServerAPI {
 	}
 
 	@Override
+	public String setUsersGroup(String groupName, String jsonUsers, String token) {
+		if (verifyToken(token)) {
+			
+			if(StringUtils.isNotEmpty(jsonUsers)) {
+				JSONArray jsonArray = new JSONArray(jsonUsers);
+				
+				if(jsonArray != null) {
+					Groups.setUsers(groupName, jsonArray);
+				}
+			}
+			
+			return "Users adicionado com sucesso -> " + jsonUsers;
+		} else {
+			return TOKEN_INVALIDO;
+		}
+	}
+
+	@Override
 	public String getGroups(String token) throws RemoteException {
 		if (verifyToken(token)) {
 			return Groups.getGroups();
