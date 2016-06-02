@@ -39,15 +39,7 @@ public class Client {
 
 	private static void testAllServices(RMIServerAPI serverStub, CORBA_Falae serverCorba)
 			throws RemoteException {
-		
-		System.out.println();
-		String strToken = serverCorba.generateToken("helton", "helton@com");
-		//System.out.println("generate token: " + strToken);
-		
-		String token = strToken;
-		System.out.println("verify a token: " + serverCorba.verifyToken(token));
-		System.out.println();
-		
+				
 		// CRETING USERS
 		System.out.println("post user: "
 				+ serverStub.postUser(1, "helton", "helton@com"));
@@ -58,13 +50,21 @@ public class Client {
 
 		System.out.println();
 
+		System.out.println();
+		String strToken = serverCorba.generateToken("helton", "helton@com");
+		//System.out.println("generate token: " + strToken);
+		
+		String token = strToken;
+		System.out.println("verify a token: " + serverCorba.verifyToken(token));
+		System.out.println();
+
 		// CREATING GROUPS
 		System.out.println("post group: "
-				+ serverStub.postGroup(1, "nome", "desc", "helton", "", token));
+				+ serverStub.postGroup(1, "nome098", "desc", "helton", "", token));
 		System.out.println("post group: "
-				+ serverStub.postGroup(2, "nome2", "desc2", "janio", "", token));
+				+ serverStub.postGroup(2, "nome888", "desc2", "janio", "", token));
 		System.out.println("post group: "
-				+ serverStub.postGroup(3, "nome3", "desc3", "ana", "", token));
+				+ serverStub.postGroup(3, "nome223", "desc3", "ana", "", token));
 
 		//SET USER IN A GROUP
 		System.out.println();

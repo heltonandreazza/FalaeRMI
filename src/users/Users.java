@@ -3,10 +3,11 @@ package users;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-
-import org.json.JSONObject;
+import java.util.concurrent.Semaphore;
 
 import json.Mapper;
+
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -18,10 +19,29 @@ public class Users {
 
 	private static HashMap<String, User> users = new HashMap<String, User>();	
 	private static File file = new File("C:\\baseJson\\users.json");
+	private static Semaphore semaforoPost = new Semaphore(1, true);
 
+	public static void main(String[] args) {
+		User user = new User(1, "iusahduiashd", "helton");
+		Users.postUser(user);
+	}
+	
 	public static void postUser(User user) {
-		users.put(user.getName(), user);
-		writeFile();
+		try {
+			semaforoPost.acquire();
+			
+			if(users.get(user.getName()) != null){
+				System.out.println("Usuario" + user.getName());
+				System.out.println(users);
+				throw new IllegalArgumentException("Já existe um usuário com este nome.");				
+			}
+			users.put(user.getName(), user);
+			writeFile();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			semaforoPost.release();
+		}
 	}
 
 	public static void deleteUser(String userName) {

@@ -4,11 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
+
+import json.Mapper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import json.Mapper;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -20,10 +21,22 @@ public class Groups {
 
 	private static HashMap<String, Group> groups = new HashMap<String, Group>();
 	private static File file = new File("C:\\baseJson\\groups.json");
+	private static Semaphore semaforoPost = new Semaphore(1, true);
 
 	public static void postGroup(Group group) {
-		groups.put(group.getName(), group);
-		writeFile();
+		try {
+			semaforoPost.acquire();
+			if (groups.get(group.getName()) != null) {
+				throw new IllegalArgumentException("Já existe um grupo com este nome.");
+			}
+			groups.put(group.getName(), group);
+			writeFile();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} finally {
+			semaforoPost.release();
+		}
+
 	}
 
 	public static void deleteGroup(String groupName) {
